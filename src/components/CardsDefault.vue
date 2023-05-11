@@ -51,7 +51,7 @@ export default {
         },
 
         maxVote(vote) {
-            if (vote <= 5) {
+            if (vote < 5) {
                 return vote = vote
             } else {
                 return vote = 5
@@ -84,26 +84,25 @@ export default {
 <template>
     <div class="d-flex overflow-auto">
         <div v-for="(element, index) in store.staticMovieArray.results" :key="index">
-            <div class="film-card bg-container">
+            <div class="bg-container position-relative single-card">
                 <img :src="imageApi(element.poster_path)" alt="">
-                <p>
-                    <strong>Titolo:</strong> {{ element.title }}
-                </p>
-                <p>
-                    <strong>Titolo originale:</strong> {{ element.original_title }}
-                </p>
-                <img class="different-flag" :src="flagApi(element.original_language.toUpperCase())" alt="">
-                <p>
-                    <strong>Lingua:</strong> {{ element.original_language }}
-                </p>
-                <p>
-                    <strong>Voto:</strong> {{ maxVote(element.vote_average) }}
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i :class="element.vote_average == 3 ? 'yellow-star' : ''" class="fa-solid fa-star"></i>
-                    <i :class="element.vote_average == 4 ? 'yellow-star' : ''" class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                </p>
+
+                <div class="texts-up position-absolute top-0 p-4">
+                    <p>
+                        <strong>Titolo:</strong> {{ element.title }}
+                    </p>
+                    <p>
+                        <strong>Titolo originale:</strong> {{ element.original_title }}
+                    </p>
+                    <img class="different-flag" :src="flagApi(element.original_language.toUpperCase())" alt="">
+                    <p>
+                        <strong>Voto:</strong> {{ maxVote(element.vote_average) }}
+                        <span v-for="n in 5" :key="n">
+                            <i v-if="n <= maxVote(element.vote_average)" class="yellow-star fa-solid fa-star"></i>
+                            <i v-else class="fa-regular fa-star"></i>
+                        </span>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -115,10 +114,24 @@ export default {
 }
 
 .different-flag {
-    height: 30px;
+    height: 1rem;
 }
 
 .yellow-star {
     color: yellow !important;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+.texts-up {
+    display: none;
+}
+
+.single-card:hover .texts-up {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.9);
+    width: 100%;
 }
 </style>

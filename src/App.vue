@@ -24,6 +24,7 @@ export default {
 
     movieApi() {
       axios.get(`https://api.themoviedb.org/3/search/multi?api_key=1d030cea23b1388bde4c590ce01bf4eb&language=IT&query=${store.film}`).then((res) => {
+        console.log(res.data.results)
         return this.store.movieArray = res.data
       })
     },
@@ -36,7 +37,7 @@ export default {
 <template>
   <div id="container">
     <SearchComp @filmChange="movieApi()" />
-    <CardsDefault v-if="store.film == ''" />
+    <CardsDefault :class="store.film != '' ? 'd-none' : 'd-block'" />
     <CardsComp />
   </div>
 </template>
